@@ -12,7 +12,7 @@ Calculator Android App that does the following operations:
   
 - Square Root
   
-- Exponentiation (X²)
+- Exponentiation (XÂ²)
   
 - Fatorial
 
@@ -33,3 +33,5 @@ Calculator Android App that does the following operations:
 <p align="center">
     <img src="https://i.ibb.co/xqZWGVt/Screenshot-20191116-011056.png" alt="Screenshot-20191116-011056" width="300" height="450""/>
    </p>
+                                                                                                                                 
+ # from test branch                                                                                                                               
