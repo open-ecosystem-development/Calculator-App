@@ -1,4 +1,4 @@
-package com.anne.officialcalculator;
+package com.hmsecosystem.calculator;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.anne.officialcalculator", appContext.getPackageName());
+        assertEquals("com.hmsecosystem.calculator", appContext.getPackageName());
     }
 }

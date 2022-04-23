@@ -4,4 +4,21 @@
     <string name="del_button">\u232b</string>
     <string name="power2">x\u00B2</string>
     <string name="plus_minus">\u207A\u2215\u208B</string>
+
+    <!-- Banner ad -->
+    <string name="banner_ad_id">testw6vs28auh3</string>
+<!--    <string name="banner_ad_id">m2eyyukz3b</string>-->
+    <string name="size_320_50">SIZE_320*50</string>
+    <string name="size_320_100">SIZE_320*100</string>
+    <string name="size_smart">SIZE_SMART</string>
+    <string name="size_300_250">SIZE_300*250</string>
+    <string name="size_360_57">SIZE_360*57</string>
+    <string name="size_360_144">SIZE_360*144</string>
+    <string name="color_black">Black</string>
+    <string name="color_white">White</string>
+    <string name="color_red">Red</string>
+    <string name="color_transparent">Transparent</string>
+    <string name="banner_size_label">Size:</string>
+    <string name="banner_color_label">Color:</string>
+    <string name="load_button_text">LOAD</string>
 </resources>

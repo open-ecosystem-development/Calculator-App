@@ -1,17 +1,67 @@
-package com.anne.officialcalculator;
+package com.hmsecosystem.calculator;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.huawei.hms.ads.AdListener;
+import com.huawei.hms.ads.AdParam;
+import com.huawei.hms.ads.HwAds;
+import com.huawei.hms.ads.banner.BannerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /*AL*/
 public class MainActivity extends AppCompatActivity {
+
+    private BannerView defaultBannerView;
+    private static final int REFRESH_TIME = 60;
+
+    private AdListener adListener = new AdListener() {
+        @Override
+        public void onAdLoaded() {
+            // Called when an ad is loaded successfully.
+            showToast("Ad loaded.");
+        }
+
+        @Override
+        public void onAdFailed(int errorCode) {
+            // Called when an ad fails to be loaded.
+            showToast(String.format(Locale.ROOT, "Ad failed to load with error code %d.", errorCode));
+        }
+
+        @Override
+        public void onAdOpened() {
+            // Called when an ad is opened.
+            showToast(String.format("Ad opened "));
+        }
+
+        @Override
+        public void onAdClicked() {
+            // Called when a user taps an ad.
+            showToast("Ad clicked");
+        }
+
+        @Override
+        public void onAdLeave() {
+            // Called when a user has left the app.
+            showToast("Ad Leave");
+        }
+
+        @Override
+        public void onAdClosed() {
+            // Called when an ad is closed.
+            showToast("Ad closed");
+        }
+    };
+
     private Button bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, bt0;
     private Button btPlus, btDiv, btMult, btMinus, btPlusMinus, btFat, btSqrt, btPow2, btDot;
     private Button btClear, btCe, btErase, btResult;
@@ -54,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
         // Screen
         screen = findViewById(R.id.screen);
         screen.setFocusable(false);
+
+        HwAds.init(this);
+        loadDefaultBannerAd();
     }
 
     // Metodos para cada um dos números
@@ -555,5 +608,18 @@ public class MainActivity extends AppCompatActivity {
     // mover caret de acordo com o texto
     public void movecarot() {
         screen.setSelection(screen.getText().length());
+    }
+
+    private void loadDefaultBannerAd() {
+        defaultBannerView = findViewById(R.id.hw_banner_view);
+        defaultBannerView.setAdListener(adListener);
+        defaultBannerView.setBannerRefresh(REFRESH_TIME);
+
+        AdParam adParam = new AdParam.Builder().build();
+        defaultBannerView.loadAd(adParam);
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }
