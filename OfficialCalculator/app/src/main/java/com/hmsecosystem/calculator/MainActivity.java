@@ -18,7 +18,12 @@ import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.ads.AdListener;
 import com.huawei.hms.ads.AdParam;
 import com.huawei.hms.ads.HwAds;
+import com.huawei.hms.ads.InterstitialAd;
 import com.huawei.hms.ads.banner.BannerView;
+import com.huawei.hms.ads.reward.Reward;
+import com.huawei.hms.ads.reward.RewardAd;
+import com.huawei.hms.ads.reward.RewardAdLoadListener;
+import com.huawei.hms.ads.reward.RewardAdStatusListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
     private BannerView defaultBannerView;
     private static final int REFRESH_TIME = 60;
+
+    private InterstitialAd interstitialAd;
+
+    private RewardAd rewardedAd;
 
     private AdListener adListener = new AdListener() {
         @Override
@@ -117,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         HwAds.init(this);
         loadDefaultBannerAd();
+        loadRewardAd();
     }
 
     // Metodos para cada um dos números
@@ -671,13 +681,128 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.reward_ad:
-                //show reward ad
+                rewardAdShow();
                 return true;
-            case R.id.about:
-                //navigate to about section
+            case R.id.interstitial_ad:
+                loadInterstitialAd();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private AdListener adListenerInterstitial = new AdListener() {
+        @Override
+        public void onAdLoaded() {
+            super.onAdLoaded();
+            showToast("Ad loaded");
+
+            // Display an interstitial ad.
+            showInterstitial();
+        }
+
+        @Override
+        public void onAdFailed(int errorCode) {
+            showToast("Ad load failed with error code: " + errorCode);
+            Log.d(TAG, "Ad load failed with error code: " + errorCode);
+        }
+
+        @Override
+        public void onAdClosed() {
+            super.onAdClosed();
+            showToast("Ad closed");
+            Log.d(TAG, "onAdClosed");
+        }
+
+        @Override
+        public void onAdClicked() {
+            Log.d(TAG, "onAdClicked");
+            super.onAdClicked();
+        }
+
+        @Override
+        public void onAdOpened() {
+            Log.d(TAG, "onAdOpened");
+            super.onAdOpened();
+        }
+    };
+
+    private void loadInterstitialAd() {
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdId(getString(R.string.image_ad_id));
+        interstitialAd.setAdListener(adListenerInterstitial);
+
+        AdParam adParam = new AdParam.Builder().build();
+        interstitialAd.loadAd(adParam);
+    }
+
+    private void showInterstitial() {
+        // Display an interstitial ad.
+        if (interstitialAd != null && interstitialAd.isLoaded()) {
+            interstitialAd.show(this);
+        } else {
+            showToast("Ad did not load");
+        }
+    }
+
+    /**
+     * Load a rewarded ad.
+     */
+    private void loadRewardAd() {
+        if (rewardedAd == null) {
+            rewardedAd = new RewardAd(this, getString(R.string.ad_id_reward));
+        }
+
+        RewardAdLoadListener rewardAdLoadListener = new RewardAdLoadListener() {
+            @Override
+            public void onRewardAdFailedToLoad(int errorCode) {
+                showToast("onRewardAdFailedToLoad " + "errorCode is :" + errorCode);
+            }
+
+            @Override
+            public void onRewardedLoaded() {
+                showToast("onRewardedLoaded");
+            }
+        };
+
+        rewardedAd.loadAd(new AdParam.Builder().build(), rewardAdLoadListener);
+    }
+
+    /**
+     * Display a rewarded ad.
+     */
+    private void rewardAdShow() {
+        if (rewardedAd.isLoaded()) {
+            rewardedAd.show(this, new RewardAdStatusListener() {
+                @Override
+                public void onRewardAdClosed() {
+                    showToast("onRewardAdClosed");
+
+                    loadRewardAd();
+                }
+
+                @Override
+                public void onRewardAdFailedToShow(int errorCode) {
+                    showToast("onRewardAdFailedToShow " + "errorCode is :" + errorCode);
+                }
+
+                @Override
+                public void onRewardAdOpened() {
+                    showToast("onRewardAdOpened");
+                }
+
+                @Override
+                public void onRewarded(Reward reward) {
+                    // You are advised to grant a reward immediately and at the same time, check whether the reward
+                    // takes effect on the server. If no reward information is configured, grant a reward based on the
+                    // actual scenario.
+//                    int addScore = reward.getAmount() == 0 ? defaultScore : reward.getAmount();
+//                    showToast("Watch video show finished , add " + addScore + " scores");
+//                    score += addScore;
+//                    setScore(score);
+//                    loadRewardAd();
+                }
+            });
         }
     }
 }
