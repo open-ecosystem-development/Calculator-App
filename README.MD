@@ -1,6 +1,7 @@
 ##  CALCULATOR ANDROID APP
 
 Calculator Android App that does the following operations:
+Linda PR test
   
 - Addition
   
@@ -12,7 +13,7 @@ Calculator Android App that does the following operations:
   
 - Square Root
   
-- Exponentiation (X²)
+- Exponentiation (XÂ²)
   
 - Fatorial
 
