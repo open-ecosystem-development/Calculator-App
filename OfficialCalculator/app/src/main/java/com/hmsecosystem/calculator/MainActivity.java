@@ -2,6 +2,10 @@ package com.hmsecosystem.calculator;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.ads.AdListener;
 import com.huawei.hms.ads.AdParam;
 import com.huawei.hms.ads.HwAds;
@@ -67,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btClear, btCe, btErase, btResult;
     private EditText screen;
     private  boolean operator, hasdot;
+
+    private static final String TAG = "PushDemoLog"; //4/21/22 by sundy for log
+    private String pushtoken = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -621,5 +631,53 @@ public class MainActivity extends AppCompatActivity {
 
     private void showToast(String message) {
         Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * get token
+     */
+    private void getToken() {
+        Log.i(TAG, "get token: begin");
+
+        // get token
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    // read from agconnect-services.json
+                    String appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
+                    pushtoken = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
+                    if(!TextUtils.isEmpty(pushtoken)) {
+                        Log.i(TAG, "get token:" + pushtoken);
+                        //showLog(pushtoken);
+                    }
+                } catch (Exception e) {
+                    Log.i(TAG,"getToken failed, " + e);
+
+                }
+            }
+        }.start();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.reward_ad:
+                //show reward ad
+                return true;
+            case R.id.about:
+                //navigate to about section
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
