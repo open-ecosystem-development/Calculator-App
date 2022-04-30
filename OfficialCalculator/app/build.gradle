@@ -5,7 +5,7 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.hmsecosystem.calculator"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -13,21 +13,25 @@ android {
     }
     signingConfigs {
         config {
-            storeFile file('./debug.keystore')
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storePassword 'android'
+            storeFile file('./sedapplifecycle.jks')
+            keyAlias 'sedappllifecycle'
+            keyPassword 'jE5NYJ2VPf3VEzuyfcwvrEVyA838w6ezt6bfZH4a'
+            storePassword 'P6SutRPKAAAurFNBVuskg3S3yG2q7tWAwmt4HkBt'
         }
     }
 
     buildTypes {
         debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
+            debuggable true
         }
         release {
             signingConfig signingConfigs.config
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable true
         }
     }
 }
@@ -43,6 +47,8 @@ dependencies {
     implementation 'com.huawei.hms:ads-consent:3.4.52.302'
     implementation 'com.huawei.hms:ads-identifier:3.4.39.302'
     implementation 'com.huawei.hms:push:6.3.0.304'
+    implementation 'com.huawei.hms:hianalytics:6.3.2.300'
+    implementation 'com.huawei.hms:iap:6.1.0.300'
     implementation 'androidx.navigation:navigation-fragment:2.3.0'
     implementation 'androidx.navigation:navigation-ui:2.3.0'
     implementation 'com.google.android.material:material:1.1.0'

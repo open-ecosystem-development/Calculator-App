@@ -15,6 +15,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.hmsecosystem.calculator.NonConsumptionActivity"
+            android:label="@string/upgrade">
+        </activity>
+        <activity
+            android:name="com.hmsecosystem.calculator.AboutActivity"
+            android:label="@string/about">
+        </activity>
+        <activity
+            android:name="com.hmsecosystem.calculator.PrivacyPolicyActivity"
+            android:label="@string/privacy_policy">
+        </activity>
+        <activity
+            android:name="com.hmsecosystem.calculator.TermsOfServiceActivity"
+            android:label="@string/terms_of_service">
+        </activity>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

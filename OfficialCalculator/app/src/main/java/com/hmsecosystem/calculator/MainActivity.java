@@ -1,5 +1,8 @@
 package com.hmsecosystem.calculator;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,6 +16,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.hmsecosystem.calculator.common.CipherUtil;
+import com.hmsecosystem.calculator.common.IapApiCallback;
+import com.hmsecosystem.calculator.common.IapRequestHelper;
 import com.huawei.agconnect.config.AGConnectServicesConfig;
 import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.ads.AdListener;
@@ -24,6 +30,16 @@ import com.huawei.hms.ads.reward.Reward;
 import com.huawei.hms.ads.reward.RewardAd;
 import com.huawei.hms.ads.reward.RewardAdLoadListener;
 import com.huawei.hms.ads.reward.RewardAdStatusListener;
+import com.huawei.hms.analytics.HiAnalytics;
+import com.huawei.hms.analytics.HiAnalyticsInstance;
+import com.huawei.hms.analytics.HiAnalyticsTools;
+import com.huawei.hms.iap.Iap;
+import com.huawei.hms.iap.IapClient;
+import com.huawei.hms.iap.entity.InAppPurchaseData;
+import com.huawei.hms.iap.entity.OwnedPurchasesResult;
+import com.huawei.hms.iap.entity.ProductInfoResult;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +47,10 @@ import java.util.Locale;
 
 /*AL*/
 public class MainActivity extends AppCompatActivity {
+
+    private boolean adsFlag = false;
+    private static final String HIDDEN_LEVEL_PRODUCTID = "RemoveAds1";
+    private boolean isHiddenLevelPurchased = false;
 
     private BannerView defaultBannerView;
     private static final int REFRESH_TIME = 60;
@@ -83,13 +103,28 @@ public class MainActivity extends AppCompatActivity {
     private EditText screen;
     private  boolean operator, hasdot;
 
-    private static final String TAG = "PushDemoLog"; //4/21/22 by sundy for log
+    private static final String TAG = "MainActivity";
     private String pushtoken = "";
+
+    private IapClient mClient;
+    // Define a variable for the Analytics Kit instance.
+    HiAnalyticsInstance instance;
+
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Enable Analytics Kit logging.
+        HiAnalyticsTools.enableLog();
+
+        // Generate an Analytics Kit instance.
+        instance = HiAnalytics.getInstance(this);
+        mClient = Iap.getIapClient(this);
+
         // Associando variáveis aos views
         // Numbers
         bt0 = findViewById(R.id.bt0);
@@ -125,8 +160,22 @@ public class MainActivity extends AppCompatActivity {
         screen.setFocusable(false);
 
         HwAds.init(this);
-        loadDefaultBannerAd();
-        loadRewardAd();
+        queryPurchases(null);
+        getToken();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d(TAG, "onResume");
+        queryPurchases(null);
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        Log.d(TAG, "onRestart");
+        queryPurchases(null);
     }
 
     // Metodos para cada um dos números
@@ -659,6 +708,9 @@ public class MainActivity extends AppCompatActivity {
                     pushtoken = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
                     if(!TextUtils.isEmpty(pushtoken)) {
                         Log.i(TAG, "get token:" + pushtoken);
+                        myClipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        myClip = ClipData.newPlainText("Push token", pushtoken);
+                        myClipboard.setPrimaryClip(myClip);
                         //showLog(pushtoken);
                     }
                 } catch (Exception e) {
@@ -673,11 +725,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+        if(!adsFlag){
+            menu.removeItem(R.id.reward_ad);
+            menu.removeItem(R.id.interstitial_ad);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.reward_ad:
@@ -685,6 +742,22 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.interstitial_ad:
                 loadInterstitialAd();
+                return true;
+            case R.id.remove_ads:
+                intent = new Intent(MainActivity.this, NonConsumptionActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.about:
+                intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.privacy_policy:
+                intent = new Intent(MainActivity.this, PrivacyPolicyActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.terms_of_service:
+                intent = new Intent(MainActivity.this, TermsOfServiceActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -805,4 +878,71 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
+    private void queryPurchases(final String continuationToken) {
+        // Query users' purchased non-consumable products.
+        IapRequestHelper.obtainOwnedPurchases(mClient, IapClient.PriceType.IN_APP_NONCONSUMABLE, continuationToken, new IapApiCallback<OwnedPurchasesResult>() {
+            @Override
+            public void onSuccess(OwnedPurchasesResult result) {
+                Log.i(TAG, "@@@: obtainOwnedPurchases, success, result: " + result);
+                checkHiddenLevelPurchaseState(result);
+                if (result != null && !TextUtils.isEmpty(result.getContinuationToken())) {
+                    queryPurchases(result.getContinuationToken());
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                Log.e(TAG, "@@@: obtainOwnedPurchases, type=" + IapClient.PriceType.IN_APP_NONCONSUMABLE + ", " + e.getMessage());
+                Toast.makeText(MainActivity.this, "get Purchases fail, " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    private void checkHiddenLevelPurchaseState(OwnedPurchasesResult result) {
+        if (result == null || result.getInAppPurchaseDataList() == null) {
+            Log.i(TAG, "@@@: result is null");
+//            queryProducts();
+            return;
+        }
+        Log.i(TAG, "@@@: result is " + result);
+        List<String> inAppPurchaseDataList = result.getInAppPurchaseDataList();
+        List<String> inAppSignature= result.getInAppSignature();
+        Log.i(TAG, "@@@: inAppPurchaseDataList is " + inAppPurchaseDataList);
+        Log.i(TAG, "@@@: inAppSignature is " + inAppSignature);
+        for (int i = 0; i < inAppPurchaseDataList.size(); i++) {
+            // Check whether the signature of the purchase data is valid.
+            if (CipherUtil.doCheck(inAppPurchaseDataList.get(i), inAppSignature.get(i), CipherUtil.getPublicKey())) {
+                try {
+                    InAppPurchaseData inAppPurchaseDataBean = new InAppPurchaseData(inAppPurchaseDataList.get(i));
+                    if (inAppPurchaseDataBean.getPurchaseState() == InAppPurchaseData.PurchaseState.PURCHASED) {
+                        // Check whether the purchased product is Hidden Level.
+                        if (HIDDEN_LEVEL_PRODUCTID.equals(inAppPurchaseDataBean.getProductId())) {
+                            isHiddenLevelPurchased = true;
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "@@@: delivery:" + e.getMessage());
+                }
+            } else {
+                Log.e(TAG, "@@@: delivery:" +  ", verify signature error");
+            }
+        }
+        if (isHiddenLevelPurchased) {
+            // Deliver the product after the Hidden Level was purchased.
+        } else {
+            // The user has not purchased the hidden level.
+            // Obtain the product details and show the purchase entry to the user.
+            showAds();
+        }
+    }
+
+    private void showAds(){
+        adsFlag=true;
+        loadDefaultBannerAd();
+        loadRewardAd();
+    }
+
 }

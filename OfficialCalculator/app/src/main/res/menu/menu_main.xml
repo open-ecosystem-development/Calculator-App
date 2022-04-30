@@ -3,4 +3,12 @@
         android:title="Reward Ad" />
     <item android:id="@+id/interstitial_ad"
         android:title="Interstitial Ad" />
+    <item android:id="@+id/remove_ads"
+        android:title="Remove Ads" />
+    <item android:id="@+id/about"
+        android:title="About" />
+    <item android:id="@+id/privacy_policy"
+        android:title="Privacy Policy" />
+    <item android:id="@+id/terms_of_service"
+        android:title="Terms of Service" />
 </menu>
