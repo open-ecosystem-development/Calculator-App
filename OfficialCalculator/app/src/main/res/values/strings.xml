@@ -10,8 +10,8 @@
     <string name="terms_of_service">Terms of Service</string>
 
     <!-- Banner ad -->
-    <string name="banner_ad_id">testw6vs28auh3</string>
-<!--    <string name="banner_ad_id">m2eyyukz3b</string>-->
+<!--    <string name="banner_ad_id">testw6vs28auh3</string>-->
+    <string name="banner_ad_id">x2324cxyzs</string>
     <string name="size_320_50">SIZE_320*50</string>
     <string name="size_320_100">SIZE_320*100</string>
     <string name="size_smart">SIZE_SMART</string>
@@ -28,14 +28,16 @@
 
     <!--Interstitial ad-->
     <string name="interstitial_title_text">This is interstitial ad sample.</string>
-    <string name="image_ad_id">teste9ih9j0rc3</string>
+<!--    <string name="image_ad_id">teste9ih9j0rc3</string>-->
+    <string name="image_ad_id">s8xm52l6wy</string>
     <string name="video_ad_id">testb4znbuh3n2</string>
     <string name="load_button">Load Ad</string>
     <string name="interstitial_display_picture">Image</string>
     <string name="interstitial_display_video">Video</string>
 
     <!-- reward ad -->
-    <string name="ad_id_reward">testx9dtjwj8hp</string>
+<!--    <string name="ad_id_reward">testx9dtjwj8hp</string>-->
+    <string name="ad_id_reward">z1rggw00mk</string>
     <string name="reward_ad_title">This is rewarded ads sample.</string>
     <string name="play_button">Play</string>
     <string name="watch_video_button_text">Watch Video</string>
