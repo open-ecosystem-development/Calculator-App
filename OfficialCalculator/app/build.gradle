@@ -28,8 +28,8 @@ android {
         config {
             storeFile file('./sedapplifecycle.jks')
             keyAlias 'sedappllifecycle'
-            keyPassword 'jE5NYJ2VPf3VEzuyfcwvrEVyA838w6ezt6bfZH4a'
-            storePassword 'P6SutRPKAAAurFNBVuskg3S3yG2q7tWAwmt4HkBt'
+            keyPassword 'xxxxx'
+            storePassword 'xxxxx'
         }
     }
 
