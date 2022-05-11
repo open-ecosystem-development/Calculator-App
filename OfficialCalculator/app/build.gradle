@@ -26,8 +26,8 @@ android {
     }
     signingConfigs {
         config {
-            storeFile file('./sedapplifecycle.jks')
-            keyAlias 'sedappllifecycle'
+            storeFile file('./xxxxx.jks')
+            keyAlias 'xxxxx'
             keyPassword 'xxxxx'
             storePassword 'xxxxx'
         }
