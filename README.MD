@@ -10,7 +10,7 @@
 
 ## Introduction  
 
-This demo showcases the integration process and functions of Huawei IAP using the non-consumable product to remove ads.
+This demo showcases the integration process and functions of Huawei IAP using the non-consumable product to remove ads and Huawei Push Kit.
 
 The products in the demo are only used to demonstrate the purchase process, and will not be put into commercial use.
 
@@ -22,7 +22,7 @@ This portion is for those that want to setup the demo with their own web host. P
 
 ### Huawei Developer Account
 
-A Huawei Developer Account is needed to access and configure Huawei IAP and App Linking (optional). You will need to create an account if you don’t already have one. Please refer to this  [guide](https://developer.huawei.com/consumer/en/doc/help/registerandlogin-0000001052613847).
+A Huawei Developer Account is needed to access and configure Huawei IAP and Push Kit (optional). You will need to create an account if you don’t already have one. Please refer to this  [guide](https://developer.huawei.com/consumer/en/doc/help/registerandlogin-0000001052613847).
 
 1. Install Android Studio on your computer. Use Android Studio to open the project-level **build.gradle** file of the sample code.  
 2. Create an app in AppGallery Connect and configure the app information. For details, please refer to [Configuring App Information in AppGallery Connect](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/config-agc-0000001050033072?ha_source=hms1).
@@ -35,6 +35,14 @@ A Huawei Developer Account is needed to access and configure Huawei IAP and App 
 * Replace **PUBLIC_KEY** in the **CipherUtil** class with the public key of your app. For details about how to obtain the public key, please refer to [Querying IAP Information](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/query-payment-info-0000001050166299?ha_source=hms1).
 * Replace the products in this demo with your products.  
 6. Run the sample code on an Android device or simulator.
+7. (Optional) For push messages:
+- Uncomment the following code inside of the getToken() method in MainActivity.java
+```
+     myClipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+     myClip = ClipData.newPlainText("Push token", pushtoken);  
+     myClipboard.setPrimaryClip(myClip);
+```
+- Refer to the [documentation](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/android-basic-sendtestmsg-0000001087842114) for sending test messages.
 
 ## Environment Requirements  
 
