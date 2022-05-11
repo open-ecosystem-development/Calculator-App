@@ -720,9 +720,9 @@ public class MainActivity extends AppCompatActivity {
                     pushtoken = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
                     if(!TextUtils.isEmpty(pushtoken)) {
                         Log.i(TAG, "get token:" + pushtoken);
-                        myClipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                        myClip = ClipData.newPlainText("Push token", pushtoken);
-                        myClipboard.setPrimaryClip(myClip);
+//                        myClipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+//                        myClip = ClipData.newPlainText("Push token", pushtoken);
+//                        myClipboard.setPrimaryClip(myClip);
                         //showLog(pushtoken);
                     }
                 } catch (Exception e) {
