@@ -110,7 +110,7 @@ public class NonConsumptionActivity extends AppCompatActivity {
             @Override
             public void onFail(Exception e) {
                 Log.e(TAG, "@@@: obtainOwnedPurchases, type=" + IapClient.PriceType.IN_APP_NONCONSUMABLE + ", " + e.getMessage());
-                Toast.makeText(NonConsumptionActivity.this, "get Purchases fail, " + e.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(NonConsumptionActivity.this, "get Purchases fail, " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -184,7 +184,7 @@ public class NonConsumptionActivity extends AppCompatActivity {
             public void onSuccess(ProductInfoResult result) {
                 Log.i(TAG, "obtainProductInfo, success");
                 if (result == null || result.getProductInfoList() == null) {
-                    Toast.makeText(NonConsumptionActivity.this, "error", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(NonConsumptionActivity.this, "error", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 nonconsumableProducts = result.getProductInfoList();
@@ -195,7 +195,7 @@ public class NonConsumptionActivity extends AppCompatActivity {
             @Override
             public void onFail(Exception e) {
                 Log.e(TAG, "obtainProductInfo: " + e.getMessage());
-                Toast.makeText(NonConsumptionActivity.this, "error", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(NonConsumptionActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -274,7 +274,7 @@ public class NonConsumptionActivity extends AppCompatActivity {
             PurchaseResultInfo purchaseResultInfo = Iap.getIapClient(this).parsePurchaseResultInfoFromIntent(data);
             switch(purchaseResultInfo.getReturnCode()) {
                 case OrderStatusCode.ORDER_STATE_CANCEL:
-                    Toast.makeText(this,"Order has been canceled!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this,"Order has been canceled!", Toast.LENGTH_SHORT).show();
                     break;
                 case OrderStatusCode.ORDER_PRODUCT_OWNED:
                     // Obtains the order information of all purchased products to check whether the product has been purchased.
@@ -286,7 +286,7 @@ public class NonConsumptionActivity extends AppCompatActivity {
                         isHiddenLevelPurchased = true;
                         deliverProduct();
                     } else {
-                        Toast.makeText(this,getString(R.string.pay_success_signfail), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(this,getString(R.string.pay_success_signfail), Toast.LENGTH_SHORT).show();
                     }
 
                     break;

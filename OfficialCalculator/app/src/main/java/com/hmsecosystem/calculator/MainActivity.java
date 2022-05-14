@@ -701,7 +701,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showToast(String message) {
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -914,7 +914,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFail(Exception e) {
                 Log.e(TAG, "@@@: obtainOwnedPurchases, type=" + IapClient.PriceType.IN_APP_NONCONSUMABLE + ", " + e.getMessage());
-                Toast.makeText(MainActivity.this, "get Purchases fail, " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(MainActivity.this, "get Purchases fail, " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
