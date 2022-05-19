@@ -22,7 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:screenOrientation="portrait">
+        <activity android:name=".MainActivity" android:screenOrientation="portrait" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -30,19 +30,19 @@
         </activity>
         <activity
             android:name="com.hmsecosystem.calculator.NonConsumptionActivity"
-            android:label="@string/upgrade">
+            android:label="@string/upgrade" android:exported="true">
         </activity>
         <activity
             android:name="com.hmsecosystem.calculator.AboutActivity"
-            android:label="@string/about">
+            android:label="@string/about" android:exported="true">
         </activity>
         <activity
             android:name="com.hmsecosystem.calculator.PrivacyPolicyActivity"
-            android:label="@string/privacy_policy">
+            android:label="@string/privacy_policy" android:exported="true">
         </activity>
         <activity
             android:name="com.hmsecosystem.calculator.TermsOfServiceActivity"
-            android:label="@string/terms_of_service">
+            android:label="@string/terms_of_service" android:exported="true">
         </activity>
         <meta-data
             android:name="preloaded_fonts"
