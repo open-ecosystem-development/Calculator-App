@@ -26,10 +26,10 @@ android {
     }
     signingConfigs {
         config {
-            storeFile file('./xxxxx.jks')
-            keyAlias 'xxxxx'
-            keyPassword 'xxxxx'
-            storePassword 'xxxxx'
+            storeFile file('./calculatorapp.jks')
+            keyAlias 'calculatorapp'
+            keyPassword 'k6uNBzszfSQNey9pJgQ45Ub5wWDK6tDxDcNYvQdJ'
+            storePassword 'yjK5g2k9nnt8A5tSXBGyG4VRyxhyjbxu26wjA7Ew'
         }
     }
 
@@ -60,6 +60,7 @@ dependencies {
     implementation 'com.huawei.hms:ads-consent:3.4.52.302'
     implementation 'com.huawei.hms:ads-identifier:3.4.39.302'
     implementation 'com.huawei.hms:push:6.3.0.304'
+    implementation 'com.huawei.agconnect:agconnect-remoteconfig:1.6.4.300'
     implementation 'com.huawei.hms:hianalytics:6.3.2.300'
     implementation 'com.huawei.hms:iap:6.1.0.300'
     implementation 'androidx.navigation:navigation-fragment:2.3.0'

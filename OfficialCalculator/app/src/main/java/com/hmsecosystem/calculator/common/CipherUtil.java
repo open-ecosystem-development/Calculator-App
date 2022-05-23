@@ -33,7 +33,7 @@ public class CipherUtil {
     private static final String SIGN_ALGORITHMS = "SHA256WithRSA";
 
     // The Iap public key of this App.
-    private static final String PUBLIC_KEY = "xxxxx";
+    private static final String PUBLIC_KEY = "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAiE2h1f2uAFJkIxAu8aOmWjv5UC7RJfIvl1Ra7UV3UZUhXysD/a9QOtNxfp4KoI8+KAs94rAKqkObvaE8uGLl4AiLdT3SGWBVpas9WhuSWotP2Rwcxa35uzvVWkebO07sbEwhgomCPBGq3JMR1FQPm6ecZIB+IF1idbZQKknboSJ2Yjum5Yzuk1bpbNIHsxw7nAX24+eN3equYI/qVbPtZHyf2R7deKrhh11HPCvMa1j0d2Ad7ViHBdbzTlFZjiVW9F7Ry+4zmaSinfZY3CfKWVcdiAL1UbbppCdeEicbwcqrwxhFWRoFwrG6udOQZ223tVm71c+PFL+Tje6rfMbmUCy7CGizAXRMVQRaQbNO8ALW+1tvIFTc8Yy8FUn52HdmLVtM/j+iKTtLb97iFciRq6KThjkr7JCBwQFg//XzQv2nyys3BuyhK8jaeH9dwYjBP/3ecUQ4wdPU87pwLwV+cb1liPTjF9u3rpR64M7EmRPbbdZfy/Wk09iaBRUPdBE7AgMBAAE=";
 
     /**
      * The method to check the signature for the data returned from the interface.

@@ -15,8 +15,6 @@ captures/
 app/*.apk
 *.idsig
 output.json
-app/src/androidTest/
-app/src/test/
 
 # IntelliJ
 *.iml

@@ -16,6 +16,8 @@ package com.hmsecosystem.calculator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,14 +27,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.hmsecosystem.calculator.common.CipherUtil;
 import com.hmsecosystem.calculator.common.IapApiCallback;
 import com.hmsecosystem.calculator.common.IapRequestHelper;
 import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.agconnect.remoteconfig.ConfigValues;
+import com.huawei.hmf.tasks.OnFailureListener;
+import com.huawei.hmf.tasks.OnSuccessListener;
 import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.ads.AdListener;
 import com.huawei.hms.ads.AdParam;
@@ -50,13 +55,20 @@ import com.huawei.hms.iap.Iap;
 import com.huawei.hms.iap.IapClient;
 import com.huawei.hms.iap.entity.InAppPurchaseData;
 import com.huawei.hms.iap.entity.OwnedPurchasesResult;
-import com.huawei.hms.iap.entity.ProductInfoResult;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+//linda
+
+import android.widget.TextView;
+import com.huawei.agconnect.remoteconfig.AGConnectConfig;
+
+//linda
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,6 +82,43 @@ public class MainActivity extends AppCompatActivity {
     private InterstitialAd interstitialAd;
 
     private RewardAd rewardedAd;
+
+    /*linda
+    private static final String GREETING_KEY = "GREETING_KEY";
+    private static final String SET_BOLD_KEY = "SET_BOLD_KEY";
+    private AGConnectConfig config;
+    private TextView textView;
+
+
+    private void updateUI(){
+        String text = config.getValueAsString(GREETING_KEY);
+        Boolean isBold = config.getValueAsBoolean(SET_BOLD_KEY);
+        textView.setText(text);
+        View screenView = findViewById(R.id.view);
+
+        if (isBold){
+            textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            screenView.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.purpal));
+
+        }else screenView.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sky));
+    }
+
+    private void fetchAndApply(){
+        config.fetch(0).addOnSuccessListener(new OnSuccessListener<ConfigValues>() {
+            @Override
+            public void onSuccess(ConfigValues configValues) {
+                // Apply Network Config to Current Config
+                config.apply(configValues);
+                updateUI();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                textView.setText("fetch setting failed: " + e.getMessage());
+            }
+        });
+    }
+    linda*/
 
     private AdListener adListener = new AdListener() {
         @Override
@@ -125,6 +174,42 @@ public class MainActivity extends AppCompatActivity {
     private ClipboardManager myClipboard;
     private ClipData myClip;
 
+    //Remote Config private functions
+    private static final String GREETING_KEY = "GREETING_KEY";
+    private static final String SET_BOLD_KEY = "SET_BOLD_KEY";
+    private AGConnectConfig config;
+    private TextView textView;
+
+    private void updateUI(){
+        String text = config.getValueAsString(GREETING_KEY);
+        Boolean isBold = config.getValueAsBoolean(SET_BOLD_KEY);
+        textView.setText(text);
+        View screenView = findViewById(R.id.view);
+
+        if (isBold){
+            textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            screenView.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.purpal));
+
+        }else screenView.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sky));
+    }
+
+    private void fetchAndApply(){
+        config.fetch(0).addOnSuccessListener(new OnSuccessListener<ConfigValues>() {
+            @Override
+            public void onSuccess(ConfigValues configValues) {
+                // Apply Network Config to Current Config
+                config.apply(configValues);
+                updateUI();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                textView.setText("fetch setting failed: " + e.getMessage());
+            }
+        });
+    }
+    //Remote Config setting done
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,6 +251,28 @@ public class MainActivity extends AppCompatActivity {
         btClear = findViewById(R.id.btclear);
         btCe = findViewById(R.id.btCE);
         btErase = findViewById(R.id.btErase);
+
+        //Remote config button
+        textView = findViewById(R.id.greeting);
+        Button button = findViewById(R.id.greeting);
+        config = AGConnectConfig.getInstance();
+
+        //config.applyDefault(R.xml.remote_config);
+        textView.setText(config.getValueAsString(GREETING_KEY));
+
+        View screenView = findViewById(R.id.view);
+        fetchAndApply();
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fetchAndApply();
+            }
+
+        });
+        //Remote config done
+
+
 
         // Screen
         screen = findViewById(R.id.screen);
