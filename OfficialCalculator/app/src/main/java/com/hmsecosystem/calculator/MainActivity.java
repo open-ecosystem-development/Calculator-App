@@ -62,12 +62,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-//linda
-
 import android.widget.TextView;
 import com.huawei.agconnect.remoteconfig.AGConnectConfig;
-
-//linda
 
 
 public class MainActivity extends AppCompatActivity {
@@ -82,43 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private InterstitialAd interstitialAd;
 
     private RewardAd rewardedAd;
-
-    /*linda
-    private static final String GREETING_KEY = "GREETING_KEY";
-    private static final String SET_BOLD_KEY = "SET_BOLD_KEY";
-    private AGConnectConfig config;
-    private TextView textView;
-
-
-    private void updateUI(){
-        String text = config.getValueAsString(GREETING_KEY);
-        Boolean isBold = config.getValueAsBoolean(SET_BOLD_KEY);
-        textView.setText(text);
-        View screenView = findViewById(R.id.view);
-
-        if (isBold){
-            textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            screenView.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.purpal));
-
-        }else screenView.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sky));
-    }
-
-    private void fetchAndApply(){
-        config.fetch(0).addOnSuccessListener(new OnSuccessListener<ConfigValues>() {
-            @Override
-            public void onSuccess(ConfigValues configValues) {
-                // Apply Network Config to Current Config
-                config.apply(configValues);
-                updateUI();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                textView.setText("fetch setting failed: " + e.getMessage());
-            }
-        });
-    }
-    linda*/
+    
 
     private AdListener adListener = new AdListener() {
         @Override
