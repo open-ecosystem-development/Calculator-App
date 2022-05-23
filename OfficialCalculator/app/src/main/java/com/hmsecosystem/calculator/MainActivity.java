@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private InterstitialAd interstitialAd;
 
     private RewardAd rewardedAd;
-    
+
 
     private AdListener adListener = new AdListener() {
         @Override
