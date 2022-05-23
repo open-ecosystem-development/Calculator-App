@@ -26,10 +26,10 @@ android {
     }
     signingConfigs {
         config {
-            storeFile file('./calculatorapp.jks')
-            keyAlias 'calculatorapp'
-            keyPassword 'k6uNBzszfSQNey9pJgQ45Ub5wWDK6tDxDcNYvQdJ'
-            storePassword 'yjK5g2k9nnt8A5tSXBGyG4VRyxhyjbxu26wjA7Ew'
+            storeFile file('./xxxxx.jks')
+            keyAlias 'xxxxx'
+            keyPassword 'xxxxx'
+            storePassword 'xxxxx'
         }
     }
 
