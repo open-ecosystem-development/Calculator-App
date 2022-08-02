@@ -1,5 +1,7 @@
 
 Version 1.2.0
 
-GMS detection: When GMS is detected, HMS kits are disabled and GMS AdMob is loaded.GMS AdMob (Banner, Interstitial, Reward)Separated ad IDs into debug and release variants.Fixed various calculator and converter issues.
+GMS detection: When GMS is detected, HMS kits are disabled and GMS AdMob is loaded.
+GMS AdMob (Banner, Interstitial, Reward)Separated ad IDs into debug and release variants.
+Fixed various calculator and converter issues.
 
