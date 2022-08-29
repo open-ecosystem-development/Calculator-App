@@ -68,10 +68,9 @@ dependencies {
     implementation 'com.huawei.hms:ads-lite:13.4.55.300'
     implementation 'com.huawei.hms:ads-consent:3.4.55.300'
     implementation 'com.huawei.hms:ads-identifier:3.4.39.302'
-    implementation 'com.huawei.hms:push:6.3.0.304'
+    implementation 'com.huawei.hms:push:6.5.0.300'
     implementation 'com.huawei.hms:hianalytics:6.6.0.300'
     implementation 'com.huawei.hms:iap:6.4.0.301'
-
     //GMS
     implementation 'com.google.android.gms:play-services-ads:21.1.0'
     implementation 'androidx.multidex:multidex:2.0.1'
