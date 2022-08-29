@@ -80,15 +80,15 @@ public class MainActivity extends AppCompatActivity {
     private RewardAd rewardedAdHms;
 
     private static final String TAG = "MainActivity";
-    private String pushtoken = "";
+    private String hmsPushToken = "";
 
-    private IapClient mClient;
-    HiAnalyticsInstance instance;
+    private IapClient hmsIapClient;
+    public HiAnalyticsInstance hmsAnalyticsInstance;
 
     //Google AdMob
-    private AdView adViewBanner;
+    private AdView gmsBannerAdView;
     private boolean gmsMode = false;
-    boolean isLoading;
+    public boolean gmsBannerAdIsLoading;
     private RewardedAd rewardedAdGms;
     private com.google.android.gms.ads.interstitial.InterstitialAd interstitialAdGms;
 
@@ -98,31 +98,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if(!isGmsAvailable()){
-            // Enable Analytics Kit logging.
-            HiAnalyticsTools.enableLog();
-
-            // Generate an Analytics Kit instance.
-            instance = HiAnalytics.getInstance(this);
-            mClient = Iap.getIapClient(this);
-
-            HwAds.init(this);
-            queryPurchases(null);
-            getToken();
+            initHms();
         }else{
-            // Initialize the Mobile Ads SDK.
-            MobileAds.initialize(this, new OnInitializationCompleteListener() {
-                @Override
-                public void onInitializationComplete(InitializationStatus initializationStatus) {}
-            });
-
-            MobileAds.setRequestConfiguration(new RequestConfiguration.Builder().build());
-            loadBannerAdGms();
-            loadRewardedAdGms();
-            loadInterstitialAdGms();
-            gmsMode = true;
+            loadAdsGms();
         }
-
-
     }
 
     @Override
@@ -130,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Log.d(TAG, "onResume");
         if(!gmsMode){
-            queryPurchases(null);
+            hmsIapQueryPurchases(null);
         }
     }
 
@@ -139,55 +118,31 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         Log.d(TAG, "onRestart");
         if(!gmsMode){
-            queryPurchases(null);
+            hmsIapQueryPurchases(null);
         }
     }
 
     public void onClick(View view)
     {
-        Intent i;
-        if(view.getId()==R.id.calculatorButton)
-        {
-            i=new Intent(this,CalculatorActivity.class);
-            startActivity(i);
+        if(view.getId()==R.id.calculatorButton) {
+            startActivity(new Intent(this,CalculatorActivity.class));
         }
-        else if(view.getId()==R.id.converterButton)
-        {
-            i=new Intent(this, UnitConverter.class);
-            startActivity(i);
+        else if(view.getId()==R.id.converterButton) {
+            startActivity(new Intent(this, UnitConverter.class));
         }
     }
 
-    private void loadDefaultBannerAdHms() {
-        defaultBannerView = findViewById(R.id.hw_banner_view);
-        defaultBannerView.setBannerRefresh(REFRESH_TIME);
-        defaultBannerView.setAdId(getString(R.string.banner_ad_id));
-        AdParam adParam = new AdParam.Builder().build();
-        defaultBannerView.loadAd(adParam);
-    }
+    private void initHms(){
+        // Enable Analytics Kit logging.
+        HiAnalyticsTools.enableLog();
 
-    /**
-     * get token
-     */
-    private void getToken() {
-        Log.i(TAG, "get token: begin");
-        // get token
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    // read from agconnect-services.json
-                    String appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
-                    pushtoken = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
-                    if(!TextUtils.isEmpty(pushtoken)) {
-                        Log.i(TAG, "get token:" + pushtoken);
-                    }
-                } catch (Exception e) {
-                    Log.i(TAG,"getToken failed, " + e);
+        // Generate an Analytics Kit instance.
+        hmsAnalyticsInstance = HiAnalytics.getInstance(this);
+        hmsIapClient = Iap.getIapClient(this);
 
-                }
-            }
-        }.start();
+        loadAdsHms();
+        hmsIapQueryPurchases(null);
+        hmsPushGetToken();
     }
 
     @Override
@@ -218,9 +173,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.reward_ad:
                 if(gmsMode){
-                    showRewardedVideoGms();
+                    showRewardAdGms();
                 }else{
-                    rewardAdShowHms();
+                    showRewardAdHms();
                 }
                 return true;
             case R.id.interstitial_ad:
@@ -251,9 +206,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void loadDefaultBannerAdHms() {
+        defaultBannerView = findViewById(R.id.hw_banner_view);
+        defaultBannerView.setBannerRefresh(REFRESH_TIME);
+        defaultBannerView.setAdId(getString(R.string.banner_ad_id));
+        AdParam adParam = new AdParam.Builder().build();
+        defaultBannerView.loadAd(adParam);
+    }
+
+    /**
+     * get token
+     */
+    private void hmsPushGetToken() {
+        Log.i(TAG, "get token: begin");
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    // read from agconnect-services.json
+                    String appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
+                    hmsPushToken = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
+                    if(!TextUtils.isEmpty(hmsPushToken)) {
+                        Log.i(TAG, "get token:" + hmsPushToken);
+                    }
+                } catch (Exception e) {
+                    Log.i(TAG,"getToken failed, " + e);
+
+                }
+            }
+        }.start();
+    }
+
     private AdListener adListenerInterstitialHms = new AdListener() {
         @Override
         public void onAdLoaded() {
+            Log.d(TAG, "onAdLoaded");
             super.onAdLoaded();
             showInterstitialHms();
         }
@@ -302,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display a rewarded ad.
      */
-    private void rewardAdShowHms() {
+    private void showRewardAdHms() {
         if (rewardedAdHms.isLoaded()) {
             rewardedAdHms.show(this, new RewardAdStatusListener() {
                 @Override
@@ -314,15 +301,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void queryPurchases(final String continuationToken) {
+    private void hmsIapQueryPurchases(final String continuationToken) {
         // Query users' purchased non-consumable products.
-        IapRequestHelper.obtainOwnedPurchases(mClient, IapClient.PriceType.IN_APP_NONCONSUMABLE, continuationToken, new IapApiCallback<OwnedPurchasesResult>() {
+        IapRequestHelper.obtainOwnedPurchases(hmsIapClient, IapClient.PriceType.IN_APP_NONCONSUMABLE, continuationToken, new IapApiCallback<OwnedPurchasesResult>() {
             @Override
             public void onSuccess(OwnedPurchasesResult result) {
                 Log.i(TAG, "@@@: obtainOwnedPurchases, success, result: " + result);
                 checkRemoveAdsPurchaseState(result);
                 if (result != null && !TextUtils.isEmpty(result.getContinuationToken())) {
-                    queryPurchases(result.getContinuationToken());
+                    hmsIapQueryPurchases(result.getContinuationToken());
                 }
             }
 
@@ -367,6 +354,10 @@ public class MainActivity extends AppCompatActivity {
     private void showAdsHms(){
         adsFlag=true;
         loadDefaultBannerAdHms();
+    }
+
+    private void loadAdsHms(){
+        HwAds.init(this);
         loadRewardAdHms();
     }
 
@@ -378,18 +369,32 @@ public class MainActivity extends AppCompatActivity {
         return isAvailable;
     }
 
+    private void loadAdsGms(){
+        // Initialize the Mobile Ads SDK.
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
+
+        MobileAds.setRequestConfiguration(new RequestConfiguration.Builder().build());
+        loadBannerAdGms();
+        loadRewardedAdGms();
+        loadInterstitialAdGms();
+        gmsMode = true;
+    }
+
     private void loadBannerAdGms(){
-        adViewBanner = findViewById(R.id.ad_view_banner);
+        gmsBannerAdView = findViewById(R.id.ad_view_banner);
         // Create an ad request.
         AdRequest adRequest = new AdRequest.Builder().build();
         // Start loading the ad in the background.
-        adViewBanner.loadAd(adRequest);
+        gmsBannerAdView.loadAd(adRequest);
     }
 
     private void loadRewardedAdGms() {
         if (rewardedAdGms == null) {
             Log.d(TAG, "loading GMS reward ad");
-            isLoading = true;
+            gmsBannerAdIsLoading = true;
             AdRequest adRequest = new AdRequest.Builder().build();
             RewardedAd.load(
                     this,
@@ -400,20 +405,20 @@ public class MainActivity extends AppCompatActivity {
                         public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                             // Handle the error.
                             Log.d(TAG, loadAdError.getMessage());
-                            MainActivity.this.isLoading = false;
+                            MainActivity.this.gmsBannerAdIsLoading = false;
                         }
 
                         @Override
                         public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                             MainActivity.this.rewardedAdGms = rewardedAd;
-                            MainActivity.this.isLoading = false;
+                            MainActivity.this.gmsBannerAdIsLoading = false;
                             Log.d(TAG, "loaded GMS reward ad");
                         }
                     });
         }
     }
 
-    private void showRewardedVideoGms() {
+    private void showRewardAdGms() {
 
         if (rewardedAdGms == null) {
             Log.d("TAG", "The rewarded ad wasn't ready yet.");
