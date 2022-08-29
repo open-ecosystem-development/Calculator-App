@@ -1,1 +1,14 @@
 /officialCalculator_backup
+
+# Credentials
+*.jks
+app/gradle.properties
+app/agconnect-services.json
+app/src/main/res/values/config.xml
+
+# Windows thumbnail db
+Thumbs.db
+                
+# OSX files
+.DS_Store
+
