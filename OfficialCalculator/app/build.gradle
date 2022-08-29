@@ -59,20 +59,19 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment:2.5.0'
-    implementation 'androidx.navigation:navigation-ui:2.5.0'
+    implementation 'androidx.navigation:navigation-fragment:2.5.1'
+    implementation 'androidx.navigation:navigation-ui:2.5.1'
     implementation 'com.google.android.material:material:1.6.1'
     //HMS
-    implementation 'com.huawei.hms:ads-lite:13.4.52.302'
-    implementation 'com.huawei.hms:ads-consent:3.4.52.302'
+    implementation 'com.huawei.hms:ads-lite:13.4.55.300'
+    implementation 'com.huawei.hms:ads-consent:3.4.55.300'
     implementation 'com.huawei.hms:ads-identifier:3.4.39.302'
     implementation 'com.huawei.hms:push:6.5.0.300'
-    implementation 'com.huawei.hms:hianalytics:6.3.2.300'
-    implementation 'com.huawei.hms:iap:6.1.0.300'
-
+    implementation 'com.huawei.hms:hianalytics:6.6.0.300'
+    implementation 'com.huawei.hms:iap:6.4.0.301'
     //GMS
-    implementation 'com.google.android.gms:play-services-ads:21.0.0'
+    implementation 'com.google.android.gms:play-services-ads:21.1.0'
     implementation 'androidx.multidex:multidex:2.0.1'
 }
