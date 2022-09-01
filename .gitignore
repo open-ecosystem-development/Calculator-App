@@ -1,5 +1,7 @@
 /officialCalculator_backup
 
+OfficialCalculator/gradle.properties
+
 # Credentials
 *.jks
 app/gradle.properties
@@ -11,4 +13,5 @@ Thumbs.db
                 
 # OSX files
 .DS_Store
+
 
