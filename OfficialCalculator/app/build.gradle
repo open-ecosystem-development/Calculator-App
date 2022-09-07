@@ -54,7 +54,6 @@ android {
         }
     }
     namespace 'com.hmsecosystem.calculator'
-
 }
 
 dependencies {
@@ -77,7 +76,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
     // appsflyer
-    implementation 'com.appsflyer:af-android-sdk:6.7.0'
+    implementation 'com.appsflyer:af-android-sdk:6.8.2'
     implementation 'com.android.installreferrer:installreferrer:2.2'
 
 }
