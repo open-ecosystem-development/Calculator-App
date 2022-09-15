@@ -65,8 +65,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.5.1'
     implementation 'com.google.android.material:material:1.6.1'
     //HMS
-    implementation 'com.huawei.hms:ads-lite:13.4.55.300'
-    implementation 'com.huawei.hms:ads-consent:3.4.55.300'
+    implementation 'com.huawei.hms:ads-prime:3.4.56.302'
     implementation 'com.huawei.hms:ads-identifier:3.4.39.302'
     implementation 'com.huawei.hms:push:6.5.0.300'
     implementation 'com.huawei.hms:hianalytics:6.6.0.300'
