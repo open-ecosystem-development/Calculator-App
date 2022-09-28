@@ -73,4 +73,9 @@ dependencies {
     //GMS
     implementation 'com.google.android.gms:play-services-ads:21.1.0'
     implementation 'androidx.multidex:multidex:2.0.1'
+    //Ads Mediation
+    implementation 'com.github.Explore-In-HMS:huawei.ads.admob_mediation:1.2.14'
+    //AppsFlyer
+    implementation 'com.appsflyer:af-android-sdk:6.8.2'
+    implementation 'com.android.installreferrer:installreferrer:2.2'
 }
