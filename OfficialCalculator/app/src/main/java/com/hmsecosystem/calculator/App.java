@@ -13,8 +13,6 @@
 
 package com.hmsecosystem.calculator;
 
-import static com.hmsecosystem.calculator.AttributionAppsFlyer.createAttributionAppsFlyer;
-
 import android.content.res.Resources;
 import android.util.Log;
 
@@ -36,16 +34,7 @@ public class App extends MultiDexApplication {
 
         final String AF_DEV_KEY = resources.getString(R.string.AF_DEV_KEY);
 
-
-//        set single Dashboard third party store name here:
-//        The value set here appears in AppsFlyer raw data install_app_store field and in
-//        Overview dashboard
-//        Cohort dashboard
-//        Raw data reports (Raw data reports are an AppsFlyer premium feature)
         AppsFlyerLib.getInstance().setOutOfStore("AG_Connect");
-
-        AttributionAppsFlyer attr = createAttributionAppsFlyer(this);
-        attr.TrackEvent();
 
         AppsFlyerConversionListener conversionListener = new AppsFlyerConversionListener(){
             @Override
@@ -53,7 +42,6 @@ public class App extends MultiDexApplication {
                 for (String attrName : conversionData.keySet()) {
                     Log.d(TAG, "attribute: " + attrName + " = " + conversionData.get(attrName));
                 }
-                setInstallData(conversionData);
             }
 
             @Override
@@ -81,21 +69,6 @@ public class App extends MultiDexApplication {
 
     }
 
-    /* for checking and debugging purpose */
-    public static String InstallConversionData =  "";
-    public static int sessionCount = 0;
-    public static void setInstallData(Map<String, Object> conversionData){
-        if(sessionCount == 0){
-            final String install_type = "Install Type: " + conversionData.get("af_status") + "\n";
-            final String media_source = "Media Source: " + conversionData.get("media_source") + "\n";
-            final String install_time = "Install Time(GMT): " + conversionData.get("install_time") + "\n";
-            final String click_time = "Click Time(GMT): " + conversionData.get("click_time") + "\n";
-            final String is_first_launch = "Is First Launch: " + conversionData.get("is_first_launch") + "\n";
-            InstallConversionData += install_type + media_source + install_time + click_time + is_first_launch;
-            sessionCount++;
-        }
-
-    }
     public static Resources getAppResources() {
         return resources;
     }
