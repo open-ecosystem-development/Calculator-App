@@ -91,6 +91,6 @@
         <meta-data android:name="com.huawei.hms.client.channel.androidMarket" android:value="false" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7328300026305104~5595136447"/>
+            android:value="ca-app-pub-4525997543941388~1542722043"/>
     </application>
 </manifest>
