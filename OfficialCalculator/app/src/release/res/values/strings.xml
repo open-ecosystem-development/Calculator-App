@@ -16,7 +16,7 @@
     <string name="image_ad_id">s8xm52l6wy</string>
     <string name="ad_id_reward">z1rggw00mk</string>
 <!--    Google AdMob-->
-    <string name="banner_ad_id_gms">ca-app-pub-7328300026305104/9181343456</string>
-    <string name="reward_ad_id_gms">ca-app-pub-7328300026305104/7617830405</string>
-    <string name="interstitial_ad_id_gms">ca-app-pub-7328300026305104/1028371322</string>
+    <string name="banner_ad_id_gms">ca-app-pub-4525997543941388/4100850046</string>
+    <string name="reward_ad_id_gms">ca-app-pub-4525997543941388/7511280310</string>
+    <string name="interstitial_ad_id_gms">ca-app-pub-4525997543941388/8824361989</string>
 </resources>
