@@ -99,9 +99,9 @@ public class MainActivity extends AppCompatActivity {
     private com.google.android.gms.ads.interstitial.InterstitialAd interstitialAdGms;
 
     //Remote config
-    private static final String Ads_unitID_Interstitial = "Ads_unitID_Interstitial";
-    private static final String Ads_unitID_Reward = "Ads_unitID_Reward";
-    private static final String Ads_unitID_Banner = "Ads_unitID_Banner";
+    private static final String AdsHms_unitID_Interstitial = "Ads_unitID_Interstitial";
+    private static final String AdsHms_unitID_Reward = "Ads_unitID_Reward";
+    private static final String AdsHms_unitID_Banner = "Ads_unitID_Banner";
     private AGConnectConfig config;
 
     @Override
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(ConfigValues configValues) {
                 // Apply Network Config to Current Config
                 config.apply(configValues);
-                defaultBannerView.setAdId(config.getValueAsString(Ads_unitID_Banner));
+                defaultBannerView.setAdId(config.getValueAsString(AdsHms_unitID_Banner));
                 AdParam adParam = new AdParam.Builder().build();
                 defaultBannerView.loadAd(adParam);
             }
@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(ConfigValues configValues) {
                 // Apply Network Config to Current Config
                 config.apply(configValues);
-                interstitialAdHms.setAdId(config.getValueAsString(Ads_unitID_Interstitial));
+                interstitialAdHms.setAdId(config.getValueAsString(AdsHms_unitID_Interstitial));
                 interstitialAdHms.setAdListener(adListenerInterstitialHms);
 
                 AdParam adParam = new AdParam.Builder().build();
@@ -331,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
                 config.apply(configValues);
 
                 if (rewardedAdHms == null) {
-                    rewardedAdHms = new RewardAd(getBaseContext(), config.getValueAsString(Ads_unitID_Reward));
+                    rewardedAdHms = new RewardAd(getBaseContext(), config.getValueAsString(AdsHms_unitID_Reward));
                 }
 
                 RewardAdLoadListener rewardAdLoadListener = new RewardAdLoadListener();
