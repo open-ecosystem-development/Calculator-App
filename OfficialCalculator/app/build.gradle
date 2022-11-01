@@ -68,6 +68,7 @@ dependencies {
     implementation 'com.huawei.hms:ads-prime:3.4.56.302'
     implementation 'com.huawei.hms:ads-identifier:3.4.39.302'
     implementation 'com.huawei.hms:push:6.5.0.300'
+    implementation 'com.huawei.agconnect:agconnect-remoteconfig:1.6.4.300'
     implementation 'com.huawei.hms:hianalytics:6.6.0.300'
     implementation 'com.huawei.hms:iap:6.4.0.301'
     //GMS

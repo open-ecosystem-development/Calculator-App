@@ -46,6 +46,9 @@ import com.hmsecosystem.calculator.iap.CipherUtil;
 import com.hmsecosystem.calculator.iap.IapApiCallback;
 import com.hmsecosystem.calculator.iap.IapRequestHelper;
 import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.agconnect.remoteconfig.ConfigValues;
+import com.huawei.hmf.tasks.OnFailureListener;
+import com.huawei.hmf.tasks.OnSuccessListener;
 import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.ads.AdListener;
 import com.huawei.hms.ads.AdParam;
@@ -65,6 +68,9 @@ import com.huawei.hms.iap.entity.OwnedPurchasesResult;
 
 import org.json.JSONException;
 import java.util.List;
+
+import com.huawei.agconnect.remoteconfig.AGConnectConfig;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -91,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean gmsBannerAdIsLoading;
     private RewardedAd rewardedAdGms;
     private com.google.android.gms.ads.interstitial.InterstitialAd interstitialAdGms;
+
+    //Remote config
+    private static final String AdsHms_unitID_Interstitial = "Ads_unitID_Interstitial";
+    private static final String AdsHms_unitID_Reward = "Ads_unitID_Reward";
+    private static final String AdsHms_unitID_Banner = "Ads_unitID_Banner";
+    private AGConnectConfig config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,9 +221,24 @@ public class MainActivity extends AppCompatActivity {
     private void loadDefaultBannerAdHms() {
         defaultBannerView = findViewById(R.id.hw_banner_view);
         defaultBannerView.setBannerRefresh(REFRESH_TIME);
-        defaultBannerView.setAdId(getString(R.string.banner_ad_id));
-        AdParam adParam = new AdParam.Builder().build();
-        defaultBannerView.loadAd(adParam);
+        config = AGConnectConfig.getInstance();
+
+        config.fetch(0).addOnSuccessListener(new OnSuccessListener<ConfigValues>() {
+            @Override
+            public void onSuccess(ConfigValues configValues) {
+                // Apply Network Config to Current Config
+                config.apply(configValues);
+                defaultBannerView.setAdId(config.getValueAsString(AdsHms_unitID_Banner));
+                AdParam adParam = new AdParam.Builder().build();
+                defaultBannerView.loadAd(adParam);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "Remote_config_fetch_failed");
+            }
+        });
+
     }
 
     /**
@@ -260,11 +287,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadInterstitialAdHms() {
         interstitialAdHms = new InterstitialAd(this);
-        interstitialAdHms.setAdId(getString(R.string.image_ad_id));
-        interstitialAdHms.setAdListener(adListenerInterstitialHms);
 
-        AdParam adParam = new AdParam.Builder().build();
-        interstitialAdHms.loadAd(adParam);
+        config = AGConnectConfig.getInstance();
+
+        config.fetch(0).addOnSuccessListener(new OnSuccessListener<ConfigValues>() {
+            @Override
+            public void onSuccess(ConfigValues configValues) {
+                // Apply Network Config to Current Config
+                config.apply(configValues);
+                interstitialAdHms.setAdId(config.getValueAsString(AdsHms_unitID_Interstitial));
+                interstitialAdHms.setAdListener(adListenerInterstitialHms);
+
+                AdParam adParam = new AdParam.Builder().build();
+                interstitialAdHms.loadAd(adParam);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "Remote_config_fetch_failed");
+            }
+        });
+
     }
 
     private void showInterstitialHms() {
@@ -278,12 +321,30 @@ public class MainActivity extends AppCompatActivity {
      * Load a rewarded ad.
      */
     private void loadRewardAdHms() {
-        if (rewardedAdHms == null) {
-            rewardedAdHms = new RewardAd(this, getString(R.string.ad_id_reward));
-        }
 
-        RewardAdLoadListener rewardAdLoadListener = new RewardAdLoadListener();
-        rewardedAdHms.loadAd(new AdParam.Builder().build(), rewardAdLoadListener);
+        config = AGConnectConfig.getInstance();
+
+        config.fetch(0).addOnSuccessListener(new OnSuccessListener<ConfigValues>() {
+            @Override
+            public void onSuccess(ConfigValues configValues) {
+                // Apply Network Config to Current Config
+                config.apply(configValues);
+
+                if (rewardedAdHms == null) {
+                    rewardedAdHms = new RewardAd(getBaseContext(), config.getValueAsString(AdsHms_unitID_Reward));
+                }
+
+                RewardAdLoadListener rewardAdLoadListener = new RewardAdLoadListener();
+
+                rewardedAdHms.loadAd(new AdParam.Builder().build(), rewardAdLoadListener);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "Remote_config_fetch_failed");
+            }
+        });
     }
 
     /**
