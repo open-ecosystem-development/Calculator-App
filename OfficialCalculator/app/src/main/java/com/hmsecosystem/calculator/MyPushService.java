@@ -14,24 +14,47 @@
 package com.hmsecosystem.calculator;
 
 import android.util.Log;
-
+import android.os.Bundle;
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.hms.push.RemoteMessage;
+import com.onesignal.OneSignal;
+import com.onesignal.OneSignalHmsEventBridge;
 
 public class MyPushService extends HmsMessageService {
     private static final String TAG = "PushDemoLog";
+    @Deprecated
     @Override
-    public void onNewToken(String s) {
-        super.onNewToken(s);
-        Log.i(TAG, "receive token:" + s);
-
+    public void onNewToken(String token) {
+        Log.i(TAG, "receive token:" + token);
+        // Forward event on to OneSignal SDK
+        OneSignalHmsEventBridge.onNewToken(this, token);
     }
 
-
+    /**
+     * When an app calls the getToken method to apply for a token from the server,
+     * if the server does not return the token during current method calling, the server can return the token through this method later.
+     * This method callback must be completed in 10 seconds. Otherwise, you need to start a new Job for callback processing.
+     *
+     * @param token token
+     * @param bundle bundle
+     */
+    @Override
+    public void onNewToken(String token, Bundle bundle) {
+        Log.i(TAG, "receive token:" + token);
+        // Forward event on to OneSignal SDK
+        OneSignalHmsEventBridge.onNewToken(this, token, bundle);
+    }
+    /**
+     * This method is called in the following cases:
+     * 1. "Data messages" - App process is alive when received.
+     * 2. "Notification Message" - foreground_show = false and app is in focus
+     * This method callback must be completed in 10 seconds. Start a new Job if more time is needed.
+     *
+     * @param message RemoteMessage
+     */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        super.onMessageReceived(remoteMessage);
-
+        OneSignalHmsEventBridge.onMessageReceived(this, remoteMessage);
         if (remoteMessage.getData().length() > 0) {
             Log.i(TAG, "Message data payload: " + remoteMessage.getData());
         }

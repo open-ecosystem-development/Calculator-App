@@ -92,5 +92,9 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-4525997543941388~1542722043"/>
+        <!-- 080122 auto init push token Sundy below-->
+        <meta-data
+            android:name="push_kit_auto_init_enabled"
+            android:value="true"/>
     </application>
 </manifest>
