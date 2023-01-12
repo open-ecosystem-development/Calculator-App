@@ -21,16 +21,28 @@ import androidx.multidex.MultiDexApplication;
 import com.appsflyer.AppsFlyerConversionListener;
 import com.appsflyer.AppsFlyerLib;
 
+import com.onesignal.OneSignal;
 import java.util.Map;
 
 public class App extends MultiDexApplication {
     private static Resources resources;
+    public static final String ONESIGNAL_APP_ID = "a1f5c5ff-239b-4b03-9fbc-ee52a342aef9";
+
     static final String TAG = "App";
 
     @Override
     public void onCreate() {
         super.onCreate();
         resources = getResources();
+        // Enable verbose OneSignal logging to debug issues if needed.
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+
+        // OneSignal Initialization
+        OneSignal.setAppId(ONESIGNAL_APP_ID);
+        OneSignal.initWithContext(this);
+
+        // promptForPushNotifications will show the native Android notification permission prompt.
+        //OneSignal.promptForPushNotifications();
 
         final String AF_DEV_KEY = resources.getString(R.string.AF_DEV_KEY);
 
