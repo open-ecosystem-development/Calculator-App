@@ -26,7 +26,6 @@ import java.util.Map;
 
 public class App extends MultiDexApplication {
     private static Resources resources;
-    //public static final String ONESIGNAL_APP_ID = "fd60d8f1-4cda-4d2f-b7f7-fba1256c1794";
     public static final String ONESIGNAL_APP_ID = "a1f5c5ff-239b-4b03-9fbc-ee52a342aef9";
 
     static final String TAG = "App";
