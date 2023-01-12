@@ -10,7 +10,7 @@
 
 ## Introduction  
 
-This demo showcases the integration process and functions of Huawei IAP using the non-consumable product to remove ads and Huawei Push Kit.
+This demo showcases the integration process and functions of Huawei IAP using the non-consumable product to remove ads, Huawei Push Kit, Huawei Remote Configuration, OneSignal Push Platform.
 
 The products in the demo are only used to demonstrate the purchase process, and will not be put into commercial use.
 
@@ -18,11 +18,11 @@ You can use the HMS Toolkit to quickly run the sample code. HMS Toolkit supports
 
 ## Setup
 
-This portion is for those that want to setup the demo with their own web host. Please use ‘app-release-signed.apk’ if you just want to test the demo as is.
+This portion is for those that want to setup the demo with their own web host. Please use â€˜app-release-signed.apkâ€™ if you just want to test the demo as is.
 
 ### Huawei Developer Account
 
-A Huawei Developer Account is needed to access and configure Huawei IAP and Push Kit (optional). You will need to create an account if you don’t already have one. Please refer to this  [guide](https://developer.huawei.com/consumer/en/doc/help/registerandlogin-0000001052613847).
+A Huawei Developer Account is needed to access and configure Huawei IAP and Push Kit (optional). You will need to create an account if you donâ€™t already have one. Please refer to this  [guide](https://developer.huawei.com/consumer/en/doc/help/registerandlogin-0000001052613847).
 
 1. Install Android Studio on your computer. Use Android Studio to open the project-level **build.gradle** file of the sample code.  
 2. Create an app in AppGallery Connect and configure the app information. For details, please refer to [Configuring App Information in AppGallery Connect](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/config-agc-0000001050033072?ha_source=hms1).
